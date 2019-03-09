@@ -11,107 +11,112 @@ using EntityState = System.Data.Entity.EntityState;
 
 namespace Practica.Controllers
 {
-    public class UsuariosController : Controller
+    public class PagosController : Controller
     {
         private PracticaContext db = new PracticaContext();
 
-        // GET: Usuarios
+        // GET: Pagos
         public ActionResult Index()
         {
-            return View(db.Usuarios.ToList());
+            var pagos = db.Pagos.Include(p => p.Pedido);
+            return View(pagos.ToList());
         }
 
-        // GET: Usuarios/Details/5
+        // GET: Pagos/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuarios.Find(id);
-            if (usuario == null)
+            Pagos pagos = db.Pagos.Find(id);
+            if (pagos == null)
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+            return View(pagos);
         }
 
-        // GET: Usuarios/Create
+        // GET: Pagos/Create
         public ActionResult Create()
         {
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto");
             return View();
         }
 
-        // POST: Usuarios/Create
+        // POST: Pagos/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Identificador,Nombre_usuario,Contraseña")] Usuario usuario)
+        public ActionResult Create([Bind(Include = "Identificador,PedidoID,TotalPagado,Descripcion")] Pagos pagos)
         {
             if (ModelState.IsValid)
             {
-                db.Usuarios.Add(usuario);
+                db.Pagos.Add(pagos);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(usuario);
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", pagos.PedidoID);
+            return View(pagos);
         }
 
-        // GET: Usuarios/Edit/5
+        // GET: Pagos/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuarios.Find(id);
-            if (usuario == null)
+            Pagos pagos = db.Pagos.Find(id);
+            if (pagos == null)
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", pagos.PedidoID);
+            return View(pagos);
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: Pagos/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Identificador,Nombre_usuario,Contraseña")] Usuario usuario)
+        public ActionResult Edit([Bind(Include = "Identificador,PedidoID,TotalPagado,Descripcion")] Pagos pagos)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(usuario).State = EntityState.Modified;
+                db.Entry(pagos).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(usuario);
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", pagos.PedidoID);
+            return View(pagos);
         }
 
-        // GET: Usuarios/Delete/5
+        // GET: Pagos/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuarios.Find(id);
-            if (usuario == null)
+            Pagos pagos = db.Pagos.Find(id);
+            if (pagos == null)
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+            return View(pagos);
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: Pagos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Usuario usuario = db.Usuarios.Find(id);
-            db.Usuarios.Remove(usuario);
+            Pagos pagos = db.Pagos.Find(id);
+            pagos.Eliminado = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

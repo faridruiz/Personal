@@ -6,18 +6,19 @@ using System.Web.Mvc;
 
 namespace Practica.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
-    {
-       
-        [Authorize]
+    {       
+
         // GET: Home
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
-
+        [Authorize]
         public ActionResult Home()
-        {
+        {            
             return View();
         }
     }

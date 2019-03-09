@@ -11,107 +11,112 @@ using EntityState = System.Data.Entity.EntityState;
 
 namespace Practica.Controllers
 {
-    public class UsuariosController : Controller
+    public class FacturasController : Controller
     {
         private PracticaContext db = new PracticaContext();
 
-        // GET: Usuarios
+        // GET: Facturas
         public ActionResult Index()
         {
-            return View(db.Usuarios.ToList());
+            var facturas = db.Facturas.Include(f => f.Pedido);
+            return View(facturas.ToList());
         }
 
-        // GET: Usuarios/Details/5
+        // GET: Facturas/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuarios.Find(id);
-            if (usuario == null)
+            Factura factura = db.Facturas.Find(id);
+            if (factura == null)
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+            return View(factura);
         }
 
-        // GET: Usuarios/Create
+        // GET: Facturas/Create
         public ActionResult Create()
         {
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto");
             return View();
         }
 
-        // POST: Usuarios/Create
+        // POST: Facturas/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Identificador,Nombre_usuario,Contraseña")] Usuario usuario)
+        public ActionResult Create([Bind(Include = "Identificador,PedidoID,Fecha")] Factura factura)
         {
             if (ModelState.IsValid)
             {
-                db.Usuarios.Add(usuario);
+                db.Facturas.Add(factura);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(usuario);
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", factura.PedidoID);
+            return View(factura);
         }
 
-        // GET: Usuarios/Edit/5
+        // GET: Facturas/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuarios.Find(id);
-            if (usuario == null)
+            Factura factura = db.Facturas.Find(id);
+            if (factura == null)
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", factura.PedidoID);
+            return View(factura);
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: Facturas/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Identificador,Nombre_usuario,Contraseña")] Usuario usuario)
+        public ActionResult Edit([Bind(Include = "Identificador,PedidoID,Fecha")] Factura factura)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(usuario).State = EntityState.Modified;
+                db.Entry(factura).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(usuario);
+            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", factura.PedidoID);
+            return View(factura);
         }
 
-        // GET: Usuarios/Delete/5
+        // GET: Facturas/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Usuario usuario = db.Usuarios.Find(id);
-            if (usuario == null)
+            Factura factura = db.Facturas.Find(id);
+            if (factura == null)
             {
                 return HttpNotFound();
             }
-            return View(usuario);
+            return View(factura);
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: Facturas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Usuario usuario = db.Usuarios.Find(id);
-            db.Usuarios.Remove(usuario);
+            Factura factura = db.Facturas.Find(id);
+            factura.Eliminado = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

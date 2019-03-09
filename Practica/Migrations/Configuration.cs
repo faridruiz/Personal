@@ -11,12 +11,13 @@ namespace Practica.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "Practica.Models.PracticaContext";
         }
-
+        
         protected override void Seed(Practica.Models.PracticaContext context)
         {
-            var usuario = new Usuario() { UsuarioID = 1, Nombre_usuario = "admin", Contraseña = "1234" };
+            var usuario = new Usuario() { Identificador = 1, Nombre_usuario = "admin", Contraseña = "1234" };
             context.Usuarios.AddOrUpdate(usuario);
             context.SaveChanges();
             //  This method will be called after migrating to the latest version.
