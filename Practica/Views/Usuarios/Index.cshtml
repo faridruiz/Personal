@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Practica.Models.Usuario>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Usuarios";
 }
 
-<h2>Index</h2>
+<h2>Usuarios</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -16,7 +16,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Contraseña)
-        </th>
+        </th> 
         <th></th>
     </tr>
 
@@ -27,11 +27,11 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Contraseña)
-        </td>
+        </td> 
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UsuarioID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UsuarioID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UsuarioID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.Identificador }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Identificador }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Identificador })
         </td>
     </tr>
 }

@@ -1,4 +1,4 @@
-﻿@model Practica.Models.Usuario
+﻿@model Practica.Models.Pagos
 
 @{
     ViewBag.Title = "Delete";
@@ -8,23 +8,31 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Usuario</h4>
+    <h4>Pagos</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Nombre_usuario)
+            @Html.DisplayNameFor(model => model.Pedido.Concepto)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Nombre_usuario)
+            @Html.DisplayFor(model => model.Pedido.Concepto)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Contraseña)
+            @Html.DisplayNameFor(model => model.TotalPagado)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Contraseña)
+            @Html.DisplayFor(model => model.TotalPagado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
         </dd>
          
 

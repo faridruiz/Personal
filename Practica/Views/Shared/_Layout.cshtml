@@ -1,12 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>@ViewBag.Title - Practica</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/datatable")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/datatable")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -20,10 +23,35 @@
                 @Html.ActionLink("Inicio", "Home", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Clientes", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Cuentas", "About", "Home")</li>
-                    <li>@Html.ActionLink("Usuarios", "Contact", "Home")</li>
+                <ul class="nav navbar-nav ">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Clientes
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Factura", "Index", "Facturas")</li>
+                            <li>@Html.ActionLink("Lista de clientes", "Index", "Clientes")</li>
+                            <li>@Html.ActionLink("Registrar nuevo cliente", "Create", "Clientes")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Cobranza
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Registrar abono", "Create", "Pagos", new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Registrar pago", "Create", "Pagos", new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Concepto de pago", "Index", "ConceptosPago", new { @class = "dropdown-item" })</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("Pedidos", "Index", "Pedidos")</li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li>@Html.ActionLink("Salir", "CerrarSesion", "Usuarios")</li>
                 </ul>
             </div>
         </div>
@@ -31,12 +59,10 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>            
+        <footer>
             <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
         </footer>
     </div>
-
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

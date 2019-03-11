@@ -1,0 +1,50 @@
+﻿@model Practica.Models.Pedido
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pedido</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Cliente.Nombre_cliente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cliente.Nombre_cliente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoDePago.Concepto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoDePago.Concepto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Concepto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Concepto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoBien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoBien)
+        </dd> 
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Identificador }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

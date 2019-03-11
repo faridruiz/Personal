@@ -1,0 +1,65 @@
+﻿@model Practica.Models.Pedido
+
+@{
+    ViewBag.Title = "Registro pedidos";
+}
+
+<h2>Nuevo pedido</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Concepto, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Concepto, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                @Html.ValidationMessageFor(model => model.Concepto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClienteID, "Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="input-group">
+                    @Html.TextBoxFor(model => Model.ClienteID, new { @list = "ClientesList", @class = "form-control", @autocomplete = "off" })
+                    <datalist id="ClientesList" style="overflow-y: auto !important;">
+                        @foreach (var item in (SelectList)ViewBag.ClienteID)
+                        {
+                            <option value="@item.Value" id="@item.Value">@item.Text</option>
+                        }
+                    </datalist>
+                </div>
+                @Html.ValidationMessageFor(x => x.ClienteID, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoBien, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.TipoBien, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TipoBien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConceptoPagoID, "Tipo de pago", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ConceptoPagoID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ConceptoPagoID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.ValidationMessage("GEN_ERROR", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>

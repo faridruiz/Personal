@@ -18,7 +18,7 @@ namespace Practica.Controllers
         // GET: Facturas
         public ActionResult Index()
         {
-            var facturas = db.Facturas.Include(f => f.Pedido);
+            var facturas = db.Facturas.Where(x => !x.Eliminado).Include(f => f.Pedido);
             return View(facturas.ToList());
         }
 
@@ -40,7 +40,7 @@ namespace Practica.Controllers
         // GET: Facturas/Create
         public ActionResult Create()
         {
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto");
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto");
             return View();
         }
 
@@ -53,12 +53,20 @@ namespace Practica.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Facturas.Add(factura);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if(factura.PedidoID > 0)
+                {
+                    Pedido pedido = db.Pedidos.Find(factura.PedidoID);
+                    if(pedido != null)
+                    {
+                        db.Facturas.Add(factura);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    ModelState.AddModelError("PedidoID", "Pedido no existe, ingrese un pedido correcto");
+                }
+                ModelState.AddModelError("PedidoID", "Pedido incorrecto, ingrese un pedido válido");
             }
-
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", factura.PedidoID);
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", factura.PedidoID);
             return View(factura);
         }
 
@@ -74,7 +82,7 @@ namespace Practica.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", factura.PedidoID);
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", factura.PedidoID);
             return View(factura);
         }
 
@@ -91,7 +99,7 @@ namespace Practica.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", factura.PedidoID);
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", factura.PedidoID);
             return View(factura);
         }
 

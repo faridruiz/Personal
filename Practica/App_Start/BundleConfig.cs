@@ -22,9 +22,20 @@ namespace Practica
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/materialize").Include(
+                      "~/Scripts/materialize.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/datatable").Include(
+                     "~/Scripts/jquery.datatable.js"));
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/materialize").Include("~/Content/materialize.css"));
+
+            bundles.Add(new StyleBundle("~/Content/datatable").Include("~/Content/datatable.css"));
         }
     }
 }

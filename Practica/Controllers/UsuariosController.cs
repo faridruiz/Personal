@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using Practica.Models;
 using EntityState = System.Data.Entity.EntityState;
 
@@ -18,7 +20,7 @@ namespace Practica.Controllers
         // GET: Usuarios
         public ActionResult Index()
         {
-            return View(db.Usuarios.ToList());
+            return View(db.Usuarios.Where(x => !x.Eliminado).ToList());
         }
 
         // GET: Usuarios/Details/5
@@ -116,6 +118,42 @@ namespace Practica.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ActionResult InicioSesion()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InicioSesion([Bind(Include = "Nombre_usuario,Contraseña")] Usuario usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                List<Usuario> _usuario = db.Usuarios.Where(x => x.Nombre_usuario == usuario.Nombre_usuario && x.Contraseña == usuario.Contraseña).ToList();
+                if(_usuario.Count == 1)
+                {
+                    IdentitySignin(new AppUserState { UserId = _usuario[0].Identificador.ToString(), Name = _usuario[0].Nombre_usuario, Email = "@", IsAdmin = false, Theme = "empty" });
+                    //HttpCookie cookie = FormsAuthentication.GetAuthCookie(usuario.Nombre_usuario, false);
+
+                    //Response.Cookies.Add(cookie);
+                    return RedirectToAction("Home", "Home");
+                }
+                ModelState.AddModelError("USUARIO_INC", "No existe un usuario con esa combinación de usuario y/o contraseña.");
+            }
+            return View();
+        }
+
+
+        [HttpGet]
+        public void CerrarSesion()
+        {
+            IdentitySignout();           
+            Response.Redirect("~/");
+        }
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -123,6 +161,39 @@ namespace Practica.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        public void IdentitySignin(AppUserState appUserState, string providerKey = null, bool isPersistent = false)
+        {
+            var claims = new List<Claim>();
+
+            // create required claims
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, appUserState.UserId));
+            claims.Add(new Claim(ClaimTypes.Name, appUserState.Name));
+
+            // custom – my serialized AppUserState object
+            claims.Add(new Claim("userState", appUserState.ToString()));
+
+            var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+
+            AuthenticationManager.SignIn(new AuthenticationProperties()
+            {
+                AllowRefresh = true,
+                IsPersistent = isPersistent,
+                ExpiresUtc = DateTime.UtcNow.AddDays(7)
+            }, identity);
+        }
+
+        public void IdentitySignout()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie,
+                                            DefaultAuthenticationTypes.ExternalCookie);
+        }
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
     }
 }

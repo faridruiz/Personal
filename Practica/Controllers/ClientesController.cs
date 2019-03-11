@@ -18,7 +18,7 @@ namespace Practica.Controllers
         // GET: Clientes
         public ActionResult Index()
         {
-            return View(db.Clientes.ToList());
+            return View(db.Clientes.Where(x => !x.Eliminado).ToList());
         }
 
         // GET: Clientes/Details/5

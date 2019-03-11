@@ -18,7 +18,7 @@ namespace Practica.Controllers
         // GET: ConceptosPago
         public ActionResult Index()
         {
-            return View(db.ConceptosPago.ToList());
+            return View(db.ConceptosPago.Where(x => !x.Eliminado).ToList());
         }
 
         // GET: ConceptosPago/Details/5

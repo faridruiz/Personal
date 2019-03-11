@@ -18,7 +18,7 @@ namespace Practica.Controllers
         // GET: Pagos
         public ActionResult Index()
         {
-            var pagos = db.Pagos.Include(p => p.Pedido);
+            var pagos = db.Pagos.Where(x => !x.Eliminado).Include(p => p.Pedido);
             return View(pagos.ToList());
         }
 
@@ -40,7 +40,7 @@ namespace Practica.Controllers
         // GET: Pagos/Create
         public ActionResult Create()
         {
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto");
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace Practica.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", pagos.PedidoID);
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.PedidoID);
             return View(pagos);
         }
 
@@ -74,7 +74,7 @@ namespace Practica.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", pagos.PedidoID);
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.PedidoID);
             return View(pagos);
         }
 
@@ -91,7 +91,7 @@ namespace Practica.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PedidoID = new SelectList(db.Pedidos, "Identificador", "Concepto", pagos.PedidoID);
+            ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.PedidoID);
             return View(pagos);
         }
 

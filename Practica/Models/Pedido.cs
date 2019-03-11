@@ -23,19 +23,28 @@ namespace Practica.Models
         [DataType(DataType.Text)]
         [MinLength(3, ErrorMessage = "Ingrese al menos una palabra para el concepto.")]
         [MaxLength(25, ErrorMessage = "Los caracteres ingresados superan el límite permitido")]
+        [Display(Name = "Nombre del producto/servicio")]
+        [Required(ErrorMessage = "Es necesario que ingrese un concepto de producto o servicio")]
         public string Concepto { get; set; }
 
+        [Required(ErrorMessage = "Es necesario un cliente para asociar el pedido")]
+        [Display(Name = "Cliente")]
         public int ClienteID { get; set; }
         /// <summary>
         /// Relación con la tabla de clientes
         /// </summary>
         [ForeignKey("ClienteID")]
+        [Display(Name = "Cliente")]
         public virtual Clientes Cliente { get; set; }
+
         /// <summary>
         /// Tipo de bien; producto o servicio
         /// </summary>
+        [Display(Name = "Tipo")]
         public TipoBien TipoBien { get; set; }
 
+        [Display(Name = "Tipo de pago")]
+        [Required(ErrorMessage = "Es necesario seleccionar un método de pago")]
         public int ConceptoPagoID { get; set; }
 
         [ForeignKey("ConceptoPagoID")]
