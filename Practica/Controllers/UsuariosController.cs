@@ -53,11 +53,16 @@ namespace Practica.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Usuarios.Add(usuario);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Usuario _usuario = db.Usuarios.Where(x => x.Nombre_usuario.ToLower() == usuario.Nombre_usuario.ToLower()).FirstOrDefault();
+                if (usuario != null)
+                    ModelState.AddModelError("Nombre_usuario", "Este nombre de usuario ya existe");
+                else
+                {
+                    db.Usuarios.Add(usuario);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
             return View(usuario);
         }
 

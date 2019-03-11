@@ -47,7 +47,7 @@ namespace Practica.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Identificador,Concepto,Descripcion,Tipo")] ConceptosPago ConceptosPago)
+        public ActionResult Create([Bind(Include = "Identificador,Concepto,Descripcion")] ConceptosPago ConceptosPago)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace Practica.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Identificador,Concepto,Descripcion,Tipo")] ConceptosPago ConceptosPago)
+        public ActionResult Edit([Bind(Include = "Identificador,Concepto,Descripcion")] ConceptosPago ConceptosPago)
         {
             if (ModelState.IsValid)
             {

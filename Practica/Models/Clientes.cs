@@ -13,10 +13,6 @@ namespace Practica.Models
     [Table("Clientes")]
     public class Clientes : BaseModel
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int ClienteID { get; set; }
-
         [DataType(DataType.Text)]
         [MaxLength(50, ErrorMessage = "El nombre de cliente sobrepasa el limite de caracteres.")]
         [MinLength(3, ErrorMessage = "Ingrese al menos una palabra para el nombre.")]
@@ -43,15 +39,7 @@ namespace Practica.Models
         /// </summary>
         [Display(Name = "Tipo de cliente")]
         public TipoCliente TipoCliente { get; set; }
-
-        /// <summary>
-        /// Facturas solicitadas por el cliente. 
-        /// </summary>
-        public virtual ICollection<Factura> Facturas { get; }
-        /// <summary>
-        /// Pagos realizados y/o abono realizado por el cliente
-        /// </summary>
-        public virtual ICollection<Pagos> Pagos { get; }
+        
         
     }
 

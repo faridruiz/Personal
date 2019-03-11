@@ -10,24 +10,39 @@ namespace Practica.Models
     [Table("Pagos")]
     public class Pagos : BaseModel
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int PagoID { get; set; }
-                
+        [Display(Name ="Pedido")]
         public int PedidoID { get; set; }
 
-        [ForeignKey("PedidoID")]        
+        [ForeignKey("PedidoID")]
+        [Display(Name = "Pedido")]
         public virtual Pedido Pedido { get; set; }        
         
-        [Display(Name = "Total pagado")]
+        [Display(Name = "Total de pago")]
         [DataType(DataType.Currency, ErrorMessage = "Ingrese valor válido para el campo de pago")]
-        [MinLength(1, ErrorMessage = "Ingrese al menos un digito para registrar el pago")]
-        public double TotalPagado { get; set; }
+        public double TotalPago { get; set; }
 
         [Display(Name = "Descripción")]
         [DataType(DataType.Text)]
         [MinLength(2, ErrorMessage = "Ingrese al menos una palabra")]
-        public string Descripcion { get; set; }        
+        public string Descripcion { get; set; }
+                
+        [Display(Name = "Tipo de pago")]
+        [Required]
+        public TipoPago TipoPago { get; set; }
 
+        [Display(Name = "Concepto de pago")]
+        [Required(ErrorMessage = "Es necesario seleccionar un método de pago")]
+        public int ConceptoPagoID { get; set; }
+
+        [ForeignKey("ConceptoPagoID")]
+        [Display(Name = "Concepto de pago")]
+        public virtual ConceptosPago ConceptoDePago { get; set; }
+
+    }
+
+    public enum TipoPago
+    {
+        Abono,
+        Pago
     }
 }

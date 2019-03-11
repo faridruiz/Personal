@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Practica.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,8 @@ namespace Practica.Controllers
 {
     [Authorize]
     public class HomeController : Controller
-    {       
+    {
+        private PracticaContext db = new PracticaContext();
 
         // GET: Home
         [Authorize]
@@ -18,7 +20,10 @@ namespace Practica.Controllers
         }
         [Authorize]
         public ActionResult Home()
-        {            
+        {
+            DateTime now = DateTime.Now.Date;
+            ViewBag.PedidosAvencer = db.Pedidos.Where(x => x.FechaPago >= now).ToList();
+            ViewBag.PedidosVencidos = db.Pedidos.Where(x => x.FechaPago < now).ToList();
             return View();
         }
     }

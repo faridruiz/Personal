@@ -34,8 +34,8 @@ namespace Practica.Models
         /// </summary>
         [Display(Name = "Fecha expedición")]
         [DataType(DataType.DateTime, ErrorMessage = "Ingrese una fecha válida")]
-        [DisplayFormat(DataFormatString = "{0:g")]
-        public DateTime? Fecha { get; set; }
+        [DisplayFormat(DataFormatString = "{0:g}")]
+        public DateTime Fecha { get; set; }
 
         
     }

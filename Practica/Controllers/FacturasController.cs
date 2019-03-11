@@ -18,7 +18,7 @@ namespace Practica.Controllers
         // GET: Facturas
         public ActionResult Index()
         {
-            var facturas = db.Facturas.Where(x => !x.Eliminado).Include(f => f.Pedido);
+            var facturas = db.Facturas.Where(x => !x.Eliminado).Include(f => f.Pedido).Include(m=>m.Pedido.Cliente);
             return View(facturas.ToList());
         }
 
@@ -49,18 +49,27 @@ namespace Practica.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Identificador,PedidoID,Fecha")] Factura factura)
+        public ActionResult Create([Bind(Include = "Identificador,PedidoID")] Factura factura)
         {
+            factura.Fecha = DateTime.Now;
             if (ModelState.IsValid)
             {
                 if(factura.PedidoID > 0)
                 {
                     Pedido pedido = db.Pedidos.Find(factura.PedidoID);
+                   
                     if(pedido != null)
                     {
-                        db.Facturas.Add(factura);
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
+                        if (PagoRestante(db.Pagos.Where(x => x.PedidoID == factura.PedidoID).ToList(), pedido.TotalAPagar) == 0)
+                        {
+                            db.Facturas.Add(factura);
+                            db.SaveChanges();
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("PedidoID", "El pedido presenta adeudo");
+                        }
                     }
                     ModelState.AddModelError("PedidoID", "Pedido no existe, ingrese un pedido correcto");
                 }
@@ -70,6 +79,19 @@ namespace Practica.Controllers
             return View(factura);
         }
 
+        public double PagoRestante(IList<Pagos> Pagos, double TotalAPagar)
+        {
+            double _TotalRestante = TotalAPagar;
+            if (Pagos != null && Pagos.Count() > 0)
+            {
+                foreach (Pagos pago in Pagos)
+                {
+                    _TotalRestante -= pago.TotalPago;
+                }
+                return _TotalRestante;
+            }
+            return _TotalRestante;
+        }
         // GET: Facturas/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -95,9 +117,18 @@ namespace Practica.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(factura).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (factura.PedidoID > 0)
+                {
+                    Pedido pedido = db.Pedidos.Find(factura.PedidoID);
+                    if (pedido != null)
+                    {
+                        db.Entry(factura).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    ModelState.AddModelError("PedidoID", "Pedido no existe, ingrese un pedido correcto");
+                }
+                ModelState.AddModelError("PedidoID", "Pedido incorrecto, ingrese un pedido válido");                
             }
             ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", factura.PedidoID);
             return View(factura);

@@ -1,12 +1,10 @@
 ﻿@model Practica.Models.ConceptosPago
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Eliminar";
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
+<h2>Eiminar</h2>
 <div>
     <h4>ConceptosPago</h4>
     <hr />
@@ -27,13 +25,6 @@
             @Html.DisplayFor(model => model.Descripcion)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Tipo)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Tipo)
-        </dd>
 
     </dl>
 
@@ -41,8 +32,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Eliminar" class="btn btn-default"  onclick="return confirm('¿Está seguro que desea eliminar este registro?')"/> |
+            @Html.ActionLink("Regresar", "Index")
         </div>
     }
 </div>

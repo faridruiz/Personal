@@ -40,6 +40,7 @@ namespace Practica.Controllers
         // GET: Pagos/Create
         public ActionResult Create()
         {
+            ViewBag.ConceptoPagoID = new SelectList(db.ConceptosPago.Where(x => !x.Eliminado), "Identificador", "Concepto");
             ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto");
             return View();
         }
@@ -49,17 +50,88 @@ namespace Practica.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Identificador,PedidoID,TotalPagado,Descripcion")] Pagos pagos)
+        public ActionResult Create([Bind(Include = "Identificador,PedidoID,TotalPago,Descripcion, TipoPago, ConceptoPagoID")] Pagos pagos)
         {
             if (ModelState.IsValid)
             {
-                db.Pagos.Add(pagos);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (pagos.PedidoID > 0)
+                {
+                    Pedido pedido = db.Pedidos.Find(pagos.PedidoID);
+                    if (pedido != null)
+                    {
+                        double _PagoRestante = PagoRestante(db.Pagos.Where(x => x.PedidoID == pagos.PedidoID).ToList(), pedido.TotalAPagar);
+                        if (_PagoRestante == 0)
+                        {
+                            ModelState.AddModelError("PedidoID", "Este pedido ya ha sido saldado");
+                        }
+                        else
+                        {
+                            if (pagos.TotalPago > _PagoRestante)
+                            {
+                                ModelState.AddModelError("TotalPago", "Se ingreso una cantidad de pago mayor de la deuda (Deuda  $" + _PagoRestante + ")");
+                            }
+                            else
+                            {
+                                if (pagos.TipoPago == TipoPago.Abono)
+                                {
+                                    double _DeudaRestante = _PagoRestante;
+                                    if (pagos.TotalPago > _DeudaRestante)
+                                    {
+                                        ModelState.AddModelError("TotalPago", "El abono es mayor a la deuda restante. (Restan $" + _DeudaRestante + ")");
+                                    }
+                                    else
+                                    {
+                                        if (pagos.TotalPago == _PagoRestante)
+                                            pagos.TipoPago = TipoPago.Pago;
+                                        db.Pagos.Add(pagos);
+                                        db.SaveChanges();
+                                        return RedirectToAction("Index");
+                                    }
+                                }
+                                else
+                                {
+                                    if (pagos.TotalPago == _PagoRestante)
+                                    {
+                                        pagos.TipoPago = TipoPago.Pago;
+                                        db.Pagos.Add(pagos);
+                                        db.SaveChanges();
+                                        return RedirectToAction("Index");
+                                    }
+                                    else
+                                    {
+                                        ModelState.AddModelError("TotalPago", "La cantidad ingresada es menor a total a pagar.");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("PedidoID", "Pedido no existe, ingrese un pedido correcto");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("PedidoID", "Pedido incorrecto, ingrese un pedido válido");
+                }
             }
-
             ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.PedidoID);
+            ViewBag.ConceptoPagoID = new SelectList(db.ConceptosPago.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.ConceptoPagoID);
             return View(pagos);
+        }
+
+        private double PagoRestante(IList<Pagos> Pagos, double TotalAPagar)
+        {
+            double _TotalRestante = TotalAPagar;
+            if (Pagos != null && Pagos.Count() > 0)
+            {
+                foreach (Pagos pago in Pagos)
+                {
+                    _TotalRestante -= pago.TotalPago;
+                }
+                return _TotalRestante;
+            }
+            return _TotalRestante;
         }
 
         // GET: Pagos/Edit/5
@@ -75,6 +147,7 @@ namespace Practica.Controllers
                 return HttpNotFound();
             }
             ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.PedidoID);
+            ViewBag.ConceptoPagoID = new SelectList(db.ConceptosPago.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.ConceptoPagoID);
             return View(pagos);
         }
 
@@ -83,7 +156,7 @@ namespace Practica.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Identificador,PedidoID,TotalPagado,Descripcion")] Pagos pagos)
+        public ActionResult Edit([Bind(Include = "Identificador,PedidoID,TotalPago,Descripcion, ConceptoPagoID")] Pagos pagos)
         {
             if (ModelState.IsValid)
             {
@@ -92,6 +165,7 @@ namespace Practica.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.PedidoID = new SelectList(db.Pedidos.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.PedidoID);
+            ViewBag.ConceptoPagoID = new SelectList(db.ConceptosPago.Where(x => !x.Eliminado), "Identificador", "Concepto", pagos.ConceptoPagoID);
             return View(pagos);
         }
 

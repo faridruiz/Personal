@@ -13,10 +13,6 @@ namespace Practica.Models
     [Table("ConceptosPago")]
     public class ConceptosPago : BaseModel
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int ConceptoID { get; set; }
-
         /// <summary>
         /// Modo de pago con el que se registrará el pago y/o abono.
         /// </summary>
@@ -31,10 +27,7 @@ namespace Practica.Models
         [MinLength(3, ErrorMessage = "Escriba al menos una palabra para la descripción.")]
         [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
-        /// <summary>
-        /// Diferencía entre un pago y un abono para el 
-        /// </summary>
-        public TipoConceptoPago Tipo { get; set; }
+        
     }
 
     /// <summary>

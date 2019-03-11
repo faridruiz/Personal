@@ -17,15 +17,7 @@
         <dd>
             @Html.DisplayFor(model => model.Cliente.Nombre_cliente)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TipoDePago.Concepto)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TipoDePago.Concepto)
-        </dd>
-
+        
         <dt>
             @Html.DisplayNameFor(model => model.Concepto)
         </dt>
@@ -42,9 +34,17 @@
             @Html.DisplayFor(model => model.TipoBien)
         </dd> 
 
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalAPagar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalAPagar)
+        </dd> 
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Identificador }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Modificar", "Edit", new { id = Model.Identificador }) |
+    @Html.ActionLink("Regresar", "Index")
 </p>

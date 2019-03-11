@@ -5,6 +5,8 @@ using System.Web;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Practica.Models
 {
@@ -27,5 +29,8 @@ namespace Practica.Models
         [Display(Name = "Contraseña")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Contraseña es requerida")]
         public string Contraseña { get; set; }
+
+        
     }
+
 }

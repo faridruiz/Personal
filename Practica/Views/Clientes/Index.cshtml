@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear nuevo cliente", "Create")
 </p>
 <table id="tbIndex" class="table table-striped table-bordered order-column" style="width:100%">
     <thead>
@@ -46,7 +46,6 @@
                 </td>
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.Identificador }) |
-                    @Html.ActionLink("Detalles", "Details", new { id = item.Identificador }) |
                     @Html.ActionLink("Eliminar", "Delete", new { id = item.Identificador })
                 </td>
             </tr>

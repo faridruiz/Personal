@@ -13,16 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente.Nombre_cliente)
+                Num. pedido
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TipoDePago.Concepto)
+                @Html.DisplayNameFor(model => model.Cliente.Nombre_cliente)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Concepto)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TipoBien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.FechaPago)
             </th>
             <th></th>
         </tr>
@@ -33,16 +36,19 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Cliente.Nombre_cliente)
+                    @Html.DisplayFor(modelItem => item.Identificador)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TipoDePago.Concepto)
+                    @Html.DisplayFor(modelItem => item.Cliente.Nombre_cliente)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Concepto)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TipoBien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaPago)
                 </td>
                 <td>
                     @Html.ActionLink("Modificar", "Edit", new { id = item.Identificador }) |
@@ -57,7 +63,7 @@
 <script>
     $(document).ready(function () {
         $('#tbIndex').DataTable({
-            "order": [[3, "desc"]],
+            "order": [[4, "desc"]],
             "language": {
                 "lengthMenu": "Mostrar _MENU_ registros por página",
                 "zeroRecords": "No se han encontrado resultados - intente de nuevo",
@@ -69,7 +75,7 @@
                     "first": "Primero",
                     "last": "Último",
                     "next": "Siguiente",
-                    "previous":"Anterior"
+                    "previous": "Anterior"
                 }
             }
         });

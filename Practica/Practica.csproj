@@ -701,17 +701,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201903090744061_ActualizacionModelos.cs" />
-    <Compile Include="Migrations\201903090744061_ActualizacionModelos.Designer.cs">
-      <DependentUpon>201903090744061_ActualizacionModelos.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903100018231_ActualizacionModelos1.cs" />
-    <Compile Include="Migrations\201903100018231_ActualizacionModelos1.Designer.cs">
-      <DependentUpon>201903100018231_ActualizacionModelos1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903100243122_ActualizacionModelos2.cs" />
-    <Compile Include="Migrations\201903100243122_ActualizacionModelos2.Designer.cs">
-      <DependentUpon>201903100243122_ActualizacionModelos2.cs</DependentUpon>
+    <Compile Include="Migrations\201903110554188_initial.cs" />
+    <Compile Include="Migrations\201903110554188_initial.Designer.cs">
+      <DependentUpon>201903110554188_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppUserState.cs" />
@@ -828,14 +820,8 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903090744061_ActualizacionModelos.resx">
-      <DependentUpon>201903090744061_ActualizacionModelos.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903100018231_ActualizacionModelos1.resx">
-      <DependentUpon>201903100018231_ActualizacionModelos1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903100243122_ActualizacionModelos2.resx">
-      <DependentUpon>201903100243122_ActualizacionModelos2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201903110554188_initial.resx">
+      <DependentUpon>201903110554188_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,7 +1,130 @@
-﻿
+﻿@model IEnumerable<Practica.Models.Pedido>
+
 @{
     ViewBag.Title = "Home";
 }
 
-<h2>Estas en inicio</h2>
+<div>
+    <h3>Pedidos vencidos</h3>
+    <table id="tbIndex" class="table table-striped table-bordered order-column tabla-pedido" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Num. pedido
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cliente.Nombre_cliente)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Concepto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TipoBien)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaPago)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model=>model.TotalAPagar)
+                </th>
+            </tr>
+        </thead>
 
+        <tbody>
+            @foreach (var item in (List<Practica.Models.Pedido>)ViewBag.PedidosVencidos)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Identificador)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cliente.Nombre_cliente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Concepto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TipoBien)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaPago)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAPagar)
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<hr />
+<div>
+    <h3>Pedidos próximos a vencer</h3>
+    <table id="tbIndex" class="table table-striped table-bordered order-column tabla-pedido" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Num. pedido
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cliente.Nombre_cliente)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Concepto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TipoBien)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaPago)
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in (List<Practica.Models.Pedido>)ViewBag.PedidosAvencer)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Identificador)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cliente.Nombre_cliente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Concepto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TipoBien)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaPago)
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('table.tabla-pedido').DataTable({
+            "order": [[3, "desc"]],
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se han encontrado resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros",
+                "infoFiltered": "(Filtrados de _MAX_ registros totales)",
+                "search": "Búsqueda",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+    });
+</script>

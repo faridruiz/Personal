@@ -10,39 +10,48 @@
     @Html.ActionLink("Facturar nuevo", "Create")
 </p>
 <table id="tbIndex" class="table table-striped table-bordered order-column" style="width:100%">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Pedido.Concepto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fecha)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pedido.Concepto)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Identificador }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Identificador }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Identificador })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Identificador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pedido.Cliente.Nombre_cliente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th></th>
         </tr>
-    }
-
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Identificador)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.Pedido.Cliente.Nombre_cliente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                
+                <td>
+                    @*@Html.ActionLink("Modificar", "Edit", new { id = item.Identificador }) |*@
+                    @Html.ActionLink("Detalle", "Details", new { id = item.Identificador }) 
+                    @*@Html.ActionLink("Eliminar", "Delete", new { id = item.Identificador })*@
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 <script>
     $(document).ready(function () {
         $('#tbIndex').DataTable({
-            "order": [[3, "desc"]],
+            "order": [[2, "desc"]],
             "language": {
                 "lengthMenu": "Mostrar _MENU_ registros por página",
                 "zeroRecords": "No se han encontrado resultados - intente de nuevo",

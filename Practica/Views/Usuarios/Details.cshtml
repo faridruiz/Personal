@@ -1,10 +1,10 @@
 ﻿@model Practica.Models.Usuario
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles";
 }
 
-<h2>Details</h2>
+<h2>Detalles</h2>
 
 <div>
     <h4>Usuario</h4>
@@ -23,12 +23,12 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Contraseña)
+            -
         </dd>
          
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Identificador }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Modificar", "Edit", new { id = Model.Identificador }) |
+    @Html.ActionLink("Regresar", "Index")
 </p>

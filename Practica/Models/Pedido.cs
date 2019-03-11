@@ -13,16 +13,13 @@ namespace Practica.Models
     [Table("Pedidos")]
     public class Pedido : BaseModel
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int PedidoID { get; set; }
 
         /// <summary>
         /// Es el producto o servicio
         /// </summary>
         [DataType(DataType.Text)]
         [MinLength(3, ErrorMessage = "Ingrese al menos una palabra para el concepto.")]
-        [MaxLength(25, ErrorMessage = "Los caracteres ingresados superan el límite permitido")]
+        [MaxLength(50, ErrorMessage = "Los caracteres ingresados superan el límite permitido")]
         [Display(Name = "Nombre del producto/servicio")]
         [Required(ErrorMessage = "Es necesario que ingrese un concepto de producto o servicio")]
         public string Concepto { get; set; }
@@ -42,15 +39,19 @@ namespace Practica.Models
         /// </summary>
         [Display(Name = "Tipo")]
         public TipoBien TipoBien { get; set; }
+                               
+        [Display(Name = "Total a pagar")]
+        [DataType(DataType.Currency, ErrorMessage = "Ingrese un valor válido para el pago")]
+        [Required(ErrorMessage = "Es necesario que se establezca el valor a pagar por el bien/servicio")]
+        public double TotalAPagar { get; set; }
 
-        [Display(Name = "Tipo de pago")]
-        [Required(ErrorMessage = "Es necesario seleccionar un método de pago")]
-        public int ConceptoPagoID { get; set; }
+        [DataType(DataType.Date, ErrorMessage = "Ingrese una fecha válida")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Fecha de pago")]
+        [Required(ErrorMessage = "Es necesario ingresar una fecha de pago")]
+        public DateTime FechaPago { get; set; }
 
-        [ForeignKey("ConceptoPagoID")]
-        public virtual ConceptosPago TipoDePago { get; set; }
     }
-
 
     /// <summary>
     /// Producto = 0,

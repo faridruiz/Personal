@@ -18,7 +18,7 @@ namespace Practica.Controllers
         // GET: Pedidos
         public ActionResult Index()
         {
-            var pedidos = db.Pedidos.Where(x => !x.Eliminado).Include(p => p.Cliente).Include(p => p.TipoDePago);
+            var pedidos = db.Pedidos.Where(x => !x.Eliminado).Include(p => p.Cliente);
             return View(pedidos.ToList());
         }
 
@@ -49,7 +49,7 @@ namespace Practica.Controllers
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create([Bind(Include = "Identificador,Concepto,ClienteID,TipoBien,ConceptoPagoID")] Pedido pedido)
+        public ActionResult Create([Bind(Include = "Identificador,Concepto,ClienteID,TipoBien, TotalAPagar, FechaPago")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +67,6 @@ namespace Practica.Controllers
                 ModelState.AddModelError("ClienteID", "Cliente incorrecto, ingrese un cliente válido");
             }
             ViewBag.ClienteID = new SelectList(db.Clientes.Where(x => !x.Eliminado), "Identificador", "Nombre_cliente", pedido.ClienteID);
-            ViewBag.ConceptoPagoID = new SelectList(db.ConceptosPago.Where(x => !x.Eliminado), "Identificador", "Concepto", pedido.ConceptoPagoID);
             return View(pedido);
         }
 
@@ -84,7 +83,6 @@ namespace Practica.Controllers
                 return HttpNotFound();
             }
             ViewBag.ClienteID = new SelectList(db.Clientes.Where(x => !x.Eliminado), "Identificador", "Nombre_cliente", pedido.ClienteID);
-            ViewBag.ConceptoPagoID = new SelectList(db.ConceptosPago.Where(x => !x.Eliminado), "Identificador", "Concepto", pedido.ConceptoPagoID);
             return View(pedido);
         }
 
@@ -93,16 +91,24 @@ namespace Practica.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Identificador,Concepto,ClienteID,TipoBien,ConceptoPagoID")] Pedido pedido)
+        public ActionResult Edit([Bind(Include = "Identificador,Concepto,ClienteID,TipoBien,TotalAPagar, FechaPago")] Pedido pedido)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pedido).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (pedido.ClienteID > 0)
+                {
+                    Clientes cliente = db.Clientes.Find(pedido.ClienteID);
+                    if (cliente != null)
+                    {
+                        db.Entry(pedido).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    ModelState.AddModelError("ClienteID", "Cliente no existe, ingrese un cliente correcto");
+                }
+                ModelState.AddModelError("ClienteID", "Cliente incorrecto, ingrese un cliente válido");                
             }
             ViewBag.ClienteID = new SelectList(db.Clientes.Where(x => !x.Eliminado), "Identificador", "Nombre_cliente", pedido.ClienteID);
-            ViewBag.ConceptoPagoID = new SelectList(db.ConceptosPago.Where(x => !x.Eliminado), "Identificador", "Concepto", pedido.ConceptoPagoID);
             return View(pedido);
         }
 

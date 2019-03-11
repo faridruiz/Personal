@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Practica.Models.Pagos>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Pagos";
 }
 
-<h2>Index</h2>
+<h2>Pagos</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Registrar nuevo pago", "Create")
 </p>
 <table id="tbIndex" class="table table-striped table-bordered order-column">
     <thead>
@@ -16,10 +16,16 @@
                 @Html.DisplayNameFor(model => model.Pedido.Concepto)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalPagado)
+                @Html.DisplayNameFor(model => model.Descripcion)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
+                @Html.DisplayNameFor(model => model.TipoPago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConceptoDePago.Concepto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPago)
             </th>
             <th></th>
         </tr>
@@ -32,15 +38,21 @@
                     @Html.DisplayFor(modelItem => item.Pedido.Concepto)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TotalPagado)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Descripcion)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Identificador }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Identificador }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Identificador })
+                    @Html.DisplayFor(modelItem => item.TipoPago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConceptoDePago.Concepto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPago)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Modificar", "Edit", new { id = item.Identificador }) |*@
+                    @Html.ActionLink("Detalles", "Details", new { id = item.Identificador })
+                    @*@Html.ActionLink("Eliminar", "Delete", new { id = item.Identificador })*@
                 </td>
             </tr>
         }
