@@ -17,15 +17,6 @@ namespace Practica
     {
         public void Configuration(IAppBuilder app)
         {
-            //HttpListener listener =
-            //      (HttpListener)app.Properties["System.Net.HttpListener"];
-            //listener.AuthenticationSchemes =
-            //    AuthenticationSchemes.Anonymous;
-            //app.Run(context =>
-            //{
-            //    context.Response.ContentType = "text/plain";
-            //    return context.Response.WriteAsync("Hello World!");
-            //});
             app.UseCookieAuthentication(new CookieAuthenticationOptions {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Usuarios/IniciarSesion")

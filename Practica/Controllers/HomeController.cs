@@ -22,7 +22,7 @@ namespace Practica.Controllers
         public ActionResult Home()
         {
             DateTime now = DateTime.Now.Date;
-            ViewBag.PedidosAvencer = db.Pedidos.Where(x => x.FechaPago >= now).ToList();
+            ViewBag.PedidosAvencer = db.Pedidos.Where(x => x.FechaPago >= now && x.FechaPago.Month == now.Month).ToList();
             ViewBag.PedidosVencidos = db.Pedidos.Where(x => x.FechaPago < now).ToList();
             return View();
         }
